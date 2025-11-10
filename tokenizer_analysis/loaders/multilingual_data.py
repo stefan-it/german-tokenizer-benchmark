@@ -7,6 +7,8 @@ import os
 import json
 import glob
 import logging
+from datasets import load_dataset
+from huggingface_hub import HfApi
 from typing import Dict, List, Optional, Tuple
 import pandas as pd
 from ..config.language_metadata import LanguageMetadata
@@ -87,6 +89,22 @@ def load_multilingual_data(language_metadata: LanguageMetadata,
     return language_texts
 
 
+def is_hf_dataset(repo_id: str) -> bool:
+    """
+    Checks, if a repo id is an actual dataset on the HF model hub.
+
+    Args:
+        repo_id: Id of a potential repo on the HF model hub
+    Returns:
+        True, if repo_is is an actual dataset, False otherwise.
+    """
+    api = HfApi()
+    try:
+        api.repo_info(repo_id, repo_type="dataset")
+        return True
+    except:
+        return False
+
 def load_language_data(data_path: str, max_texts: int) -> List[str]:
     """
     Load text data from a directory or file (JSON, Parquet, or text file).
@@ -98,10 +116,6 @@ def load_language_data(data_path: str, max_texts: int) -> List[str]:
     Returns:
         List of text samples
     """
-    if not os.path.exists(data_path):
-        logger.warning(f"Path does not exist: {data_path}")
-        return []
-    
     texts = []
     
     if os.path.isfile(data_path):
@@ -149,11 +163,48 @@ def load_language_data(data_path: str, max_texts: int) -> List[str]:
             except Exception as e:
                 logger.error(f"Error processing text file {text_file}: {e}")
                 continue
+    elif is_hf_dataset(data_path):
+        # We have potentially found a HF dataset
+        texts = load_from_model_hub(data_path, max_texts)
     else:
         logger.warning(f"Path is neither file nor directory: {data_path}")
         return []
     
     return texts[:max_texts]
+
+
+def load_from_model_hub(repo_id: str, max_texts: int) -> List[str]:
+    """
+    Load texts from a dataset on the HF model hub.
+
+    Args:
+        repo_id: Id to a dataset on the HF model hub
+        max_texts: Maximum number of texts to load
+    Returns:
+        List of text samples
+    """
+    logger.debug(f"Processing dataset from HF model hub: {repo_id}")
+    ds = load_dataset(repo_id, split="train")
+
+    text_column = None
+    for col_name in TEXT_COLUMN_NAMES:
+        if col_name in ds.column_names:
+            text_column = col_name
+            break
+
+    if text_column is None:
+        logger.warning(f"No text column found in {repo_id}")
+        return []
+
+    texts = []
+    for i, example in enumerate(ds):
+        if i >= max_texts:
+            break
+        texts.append(example[text_column])
+
+    print(len(texts))
+
+    return texts
 
 
 def load_from_json(json_file: str, max_texts: int) -> List[str]:
