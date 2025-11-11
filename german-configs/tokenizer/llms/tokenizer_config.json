@@ -3,10 +3,6 @@
     "class": "huggingface",
     "path": "dbmdz/german-gpt2"
   },
-  "german_gpt2_larger": {
-    "class": "huggingface",
-    "path": "stefan-it/german-gpt2-larger"
-  },
   "llämmlein": {
     "class": "huggingface",
     "path": "LSX-UniWue/LLaMmlein_120M"
