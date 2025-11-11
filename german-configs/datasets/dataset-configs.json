@@ -24,6 +24,11 @@
       "name": "DFKI MobIE",
       "iso_code": "de",
       "data_path": "german-tokenizer-benchmark/mobie"
+    },
+    "ud_hdt": {
+      "name": "UD HDT",
+      "iso_code": "de",
+      "data_path": "german-tokenizer-benchmark/ud-hdt"
     }
   }
 }
