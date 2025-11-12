@@ -1,4 +1,77 @@
+# GerTokEval
+
+A comprehensive framework for evaluating German tokenizers across various datasets with detailed metrics and fairness analysis.
+
+GerTokEval is a fork of [Clara Meister's](https://github.com/cimeister/tokenizer-analysis-suite) excellent TokEval framework, adapted specifically for German tokenizers and datasets. Many thanks to Clara for making TokEval publicly available!
+
+## Features
+
+This German adaptation includes:
+
+* **Hugging Face Integration**: Seamless dataset loading from the Hugging Face Hub, with curated datasets available in the [German Tokenizer Benchmark](https://huggingface.co/german-tokenizer-benchmark) organization
+* **Pre-configured German Models**: Ready-to-use configurations for popular German encoder and decoder-only models
+* **Enhanced Security**: Out-of-the-box support for tokenizers requiring the `trust_remote_code` option
+
+## Quick Start
+
+### Installation
+
+```bash
+# Clone and install
+git clone https://github.com/stefan-it/german-tokenizer-benchmark.git
+cd german-tokenizer-benchmark
+pip install -e .
+```
+
+### Evaluating Encoder Models
+
+The following command can be used to get nice comprehensive metrics for popular German encoder models, such as GBERT:
+
+```bash
+python3 scripts/run_tokenizer_analysis.py \
+  --samples-per-lang 153035 \
+  --tokenizer-config german-configs/tokenizer/encoder/tokenizer_config.json \
+  --language-config german-configs/datasets/dataset-configs.json \
+  --per-language-plots \
+  --output-dir german-encoder-results \
+  --generate-latex-tables
+```
+
+The following results can be achieved:
+
+| Tokenizer | Fertility | Vocab  Utilization | Type-Token  Ratio | Token Length | Tokens per Line |
+| --- | --- | --- | --- | --- | --- |
+| german_bert | 0.251 | 84.2% | 0.0032 | 4.32 | 31.0 |
+| gbert | 0.248 | 90.5% | 0.0036 | 4.32 | 31.2 |
+| geistbert | 0.239 | 93.3% | 0.0065 | 4.52 | 29.7 |
+| gerturax | 0.230 | 87.3% | 0.0077 | 4.66 | 28.8 |
+| geberta | 0.234 | 93.2% | 0.0064 | 4.61 | 29.1 |
+| modern_gbert | 0.248 | 90.5% | 0.0036 | 4.32 | 31.2 |
+
+### Evaluating Decoder Models (LLMs)
+
+The following command be used to get metrics for popular German LLMs, such as LLäMmlein:
+
+| Tokenizer | Fertility | Vocab  Utilization | Type-Token  Ratio | Token Length | Tokens per Line |
+| --- | --- | --- | --- | --- | --- |
+| german_gpt2 | 0.212 | 93.3% | 0.0067 | 4.94 | 28.1 |
+| german_gpt2_larger | 0.212 | 93.3% | 0.0067 | 4.94 | 28.1 |
+| llämmlein | 0.235 | 97.1% | 0.0042 | 4.53 | 29.8 |
+| teuken | 0.252 | 19.0% | 0.0056 | 4.17 | 34.1 |
+| nanochat_german | 0.207 | 91.5% | 0.0086 | 5.09 | 27.7 |
+
+## Adding Custom Tokenizers
+
+More tokenizers can be added in the configs for [encoders](german-configs/tokenizer/encoder/tokenizer_config.json) or [LLMs](german-configs/tokenizer/llms/tokenizer_config.json).
+
+## Adding Custom Datasets
+
+Additionally, more datasets can be added in [this](german-configs/datasets/dataset-configs.json) configuration file.
+
 # TokEval
+
+<details>
+  <summary>Have a look at the original TokEval readme for more information about the framework!</summary>
 
 A framework for evaluating tokenizers across languages with comprehensive metrics and multilingual fairness analysis.
 
@@ -18,8 +91,8 @@ Get up and running in 30 seconds:
 
 ```bash
 # Clone and install
-git clone https://github.com/cimeister/tokenizer-analysis-suite.git
-cd tokenizer-analysis-suite
+git clone https://github.com/stefan-it/german-tokenizer-benchmark.git
+cd german-tokenizer-benchmark
 pip install -e .
 
 # Run demo analysis with built-in sample data
@@ -39,8 +112,8 @@ This will analyze two sample tokenizers (BPE and Unigram) across 5 languages and
 
 ### Full Installation (with submodules)
 ```bash
-git clone https://github.com/cimeister/tokenizer-analysis-suite.git
-cd tokenizer-analysis-suite
+git clone https://github.com/stefan-it/german-tokenizer-benchmark.git
+cd german-tokenizer-benchmark
 pip install -e .
 
 # Install morphological analysis module
@@ -817,6 +890,10 @@ analyzer_from_cache = UnifiedTokenizerAnalyzer.create_analyzer_from_tokenized_da
 cached_results, cached_encodings = analyzer_from_cache.run_full_analysis(all_encodings=cached_encodings)
 ```
 
+</details>
+
+# Citation
+
 If you use this tokenizer analysis framework in your research, please cite it as follows:
 
 ```bibtex
@@ -827,3 +904,18 @@ If you use this tokenizer analysis framework in your research, please cite it as
   url = {https://github.com/cimeister/tokenizer-analysis}
 }
 ```
+
+For the German fork, it would be amazing if you could also **additionally** add the following reference:
+
+```bibtex
+@software{schweter_tokenizer_analysis_2025,
+  title = {GerTokEval: A German Tokenizer Analysis Suite},
+  author = {Schweter, Stefan},
+  year = {2025},
+  url = {https://github.com/stefan-it/german-tokenizer-benchmark}
+}
+```
+
+# ❤️ Acknowledgements
+
+Many thanks to [Clara Meister](https://github.com/cimeister) for releasing the amazing TokEval framework!

@@ -1,0 +1,18 @@
+{
+  "german_gpt2": {
+    "class": "huggingface",
+    "path": "dbmdz/german-gpt2"
+  },
+  "llämmlein": {
+    "class": "huggingface",
+    "path": "LSX-UniWue/LLaMmlein_120M"
+  },
+  "teuken": {
+    "class": "huggingface",
+    "path": "openGPT-X/Teuken-7B-instruct-v0.6"
+  },
+  "nanochat_german": {
+    "class": "huggingface",
+    "path": "stefan-it/nanochat-german-v1"
+  }
+}

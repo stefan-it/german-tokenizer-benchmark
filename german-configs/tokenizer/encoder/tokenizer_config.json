@@ -1,0 +1,26 @@
+{
+  "german_bert": {
+    "class": "huggingface",
+    "path": "google-bert/bert-base-german-cased"
+  },
+  "gbert": {
+    "class": "huggingface",
+    "path": "deepset/gbert-base"
+  },
+  "geistbert": {
+    "class": "huggingface",
+    "path": "GeistBERT/GeistBERT_base"
+  },
+  "gerturax": {
+    "class": "huggingface",
+    "path": "gerturax/gerturax-3"
+  },
+  "geberta": {
+    "class": "huggingface",
+    "path": "ikim-uk-essen/geberta-base"
+  },
+  "modern_gbert": {
+    "class": "huggingface",
+    "path": "LSX-UniWue/ModernGBERT_134M"
+  }
+}
